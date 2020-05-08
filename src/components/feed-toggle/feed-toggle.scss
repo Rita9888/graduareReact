@@ -1,0 +1,28 @@
+.feed-toggle {
+  margin-bottom: -1px;
+}
+
+.nav-pills.outline-active .nav-link {
+  border-radius: 0;
+  border: none;
+  border-bottom: 2px solid transparent;
+  background: 0 0;
+  color: #aaa;
+  &:hover {
+    color: rgb(97, 96, 96);
+  }
+}
+
+.nav-pills.outline-active .nav-link.active {
+  background: #fff !important;
+  border-bottom: 2px solid #5cb85c !important;
+  color: #5cb85c !important;
+}
+
+.nav-pills .nav-item {
+  float: left;
+}
+
+.nav-pills .nav-item + .nav-item {
+  margin-left: 0.2rem;
+}

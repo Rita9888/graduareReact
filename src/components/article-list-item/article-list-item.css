@@ -1,0 +1,106 @@
+.article-preview {
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  padding: 1.5rem 0;
+}
+
+.article-preview .article-meta {
+  margin: 0 0 1rem;
+  display: block;
+  position: relative;
+  font-weight: 300;
+}
+
+.article-preview .article-meta img {
+  display: inline-block;
+  vertical-align: middle;
+  height: 32px;
+  width: 32px;
+  border-radius: 30px;
+}
+
+.article-preview .article-meta .info {
+  margin: 0 1.5rem 0 0.3rem;
+  display: inline-block;
+  vertical-align: middle;
+  line-height: 1rem;
+}
+
+.article-preview .article-meta .info .author {
+  display: block;
+  font-weight: 500 !important;
+}
+
+.article-preview .article-meta .info .date {
+  color: #bbb;
+  font-size: 0.8rem;
+  display: block;
+}
+
+a {
+  color: #5cb85c;
+  text-decoration: none;
+}
+
+.pull-xs-right {
+  float: right !important;
+}
+
+.pull-xs-right btn-sm,
+.pull-xs-right .btn-group-sm > .btn {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.875rem;
+  border-radius: 0.2rem;
+}
+
+.pull-xs-right .btn-outline-primary {
+  color: #5cb85c;
+  background-image: none;
+  background-color: transparent;
+  border-color: #5cb85c;
+}
+
+.pull-xs-right .btn-outline-primary:hover {
+  color: #fff;
+  background-color: #5cb85c;
+  border-color: #5cb85c;
+}
+
+.preview-link {
+  color: inherit !important;
+}
+
+.preview-link h1 {
+  font-weight: 600 !important;
+  font-size: 1.5rem !important;
+  margin-bottom: 3px;
+}
+
+.preview-link p {
+  font-weight: 300;
+  font-size: 24px;
+  color: #999;
+  margin-bottom: 15px;
+  font-size: 1rem;
+  line-height: 1.3rem;
+}
+
+.preview-link span {
+  max-width: 30%;
+  font-size: 0.8rem;
+  font-weight: 300;
+  color: #bbb;
+  vertical-align: middle;
+}
+
+.preview-link ul {
+  float: right;
+  max-width: 50%;
+  vertical-align: top;
+}
+
+.preview-link ul .tag-list {
+  padding-left: 0 !important;
+  display: inline-block;
+  list-style: none !important;
+}
+/*# sourceMappingURL=article-list-item.css.map */
