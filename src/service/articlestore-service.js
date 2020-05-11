@@ -11,17 +11,30 @@ export default class ArticlestoreService {
     return await res.json();
   };
 
-  getAllArticles = async () => {
-    const res = await this.getResourse("/articles?limit=10&amp;offset=0.");
+  getAllArticles = async (articlePerPage, indexOfLastArticle) => {
+    const res = await this.getResourse(
+      `/articles?limit=${articlePerPage}&amp;offset=${indexOfLastArticle}.`
+    );
     const newArrayArticle = res.articles;
     const result = newArrayArticle.map(this._transformArticles);
-    console.log(result);
     return result;
   };
 
-  _transformArticles = (article, key) => {
+  getAllTags = async () => {
+    const res = await this.getResourse(`tags`);
+    const tags = res.tags;
+    return tags;
+  };
+
+  getArticlesCount = async () => {
+    const res = await this.getResourse(`/articles?`);
+    const articlesCount = res.articlesCount;
+    return articlesCount;
+  };
+
+  _transformArticles = (article, index) => {
     return {
-      id: key,
+      id: index,
       title: article.title,
       slug: article.slug,
       body: article.body,
@@ -32,4 +45,3 @@ export default class ArticlestoreService {
     };
   };
 }
-//articles?limit=10&amp;offset=0.

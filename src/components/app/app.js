@@ -4,7 +4,7 @@ import Header from "../header";
 import Banner from "../banner";
 import ContainerPage from "../container-page";
 import FeedToggle from "../feed-toggle";
-import ArticleListContainer from "../articles-list";
+import ArticleListContainer from "../article-list-container/article-list-container";
 
 class App extends React.Component {
   render() {
@@ -13,7 +13,7 @@ class App extends React.Component {
         <Header />
         <Banner />
         <ContainerPage left={<FeedToggle />} />
-        <ContainerPage left={<ArticleListContainer />} />
+        <ArticleListContainer />
       </div>
     );
   }

@@ -1,1 +1,6 @@
-/* No CSS *//*# sourceMappingURL=article-list.css.map */
+.article-list {
+  list-style-type: none;
+  -webkit-padding-start: 0;
+          padding-inline-start: 0;
+}
+/*# sourceMappingURL=article-list.css.map */
