@@ -31,4 +31,25 @@ const paginate = (numberPage) => {
   };
 };
 
-export { articleLoading, articlesCountLoaded, paginate, articlesLoadingError };
+const sortByTag = (tag) => {
+  return {
+    type: "SORT_BY_TAG",
+    payload: tag,
+  };
+};
+
+const articlesListSwitch = (toggleButton) => {
+  return {
+    type: "ARTICLES_LIST_SWITCH",
+    payload: toggleButton,
+  };
+};
+
+export {
+  articleLoading,
+  articlesCountLoaded,
+  paginate,
+  articlesLoadingError,
+  sortByTag,
+  articlesListSwitch,
+};

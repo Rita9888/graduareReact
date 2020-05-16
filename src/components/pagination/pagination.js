@@ -34,7 +34,7 @@ const Pagination = (props) => {
   );
 };
 
-const mapStateToProps = ({ articlePerPage, articlesCount }) => {
+const mapStateToProps = ({ article: { articlePerPage, articlesCount } }) => {
   return {
     articlePerPage,
     articlesCount,

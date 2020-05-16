@@ -1,5 +1,5 @@
 import React from "react";
-import ArticleListItem from "../article-list-item";
+import ArticleListItem from "./article-list-item";
 //import ErrorIndicator from "../error-indicator/";
 import "./article-list.css";
 

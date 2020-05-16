@@ -1,0 +1,21 @@
+.text-xs-center {
+  text-align: center !important;
+}
+
+.btn-primary {
+  &:hover {
+    background-color: #4a8f4a !important;
+    border-color: #4a8f4a;
+  }
+}
+
+.btn-outline-danger {
+  color: #b85c5c;
+  background-image: none;
+  background-color: transparent;
+  border-color: #b85c5c;
+  &:hover {
+    background-color: #b85c5c;
+    color: #fff;
+  }
+}

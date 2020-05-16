@@ -5,6 +5,9 @@ const initialState = {
   currentPage: 1,
   articlePerPage: 10,
   indexOfLastArticle: 0,
+  currentTag: "",
+  toggleFeed: "GlobalFeed",
+  toggleButtonTag: false,
 };
 
 //const updateCart = (state, action) => {}
@@ -29,12 +32,26 @@ const reducer = (state = initialState, action) => {
         articlesCount: action.payload,
       };
     case "PAGINATE":
-      //const newIndexOfLastArticle = state.currentPage * state.articlePerPage;
       return {
         ...state,
         currentPage: action.payload,
         indexOfLastArticle: (action.payload - 1) * state.articlePerPage,
       };
+    case "SORT_BY_TAG":
+      return {
+        ...state,
+        currentTag: action.payload,
+        toggleButtonTag: true,
+      };
+    case "ARTICLES_LIST_SWITCH":
+      if (action.payload !== "TagFeed") {
+        return { ...state, toggleFeed: action.payload, toggleButtonTag: false };
+      } else
+        return {
+          ...state,
+          toggleFeed: action.payload,
+          toggleButtonTag: true,
+        };
     default:
       return state;
   }

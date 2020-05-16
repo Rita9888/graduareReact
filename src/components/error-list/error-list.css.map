@@ -1,0 +1,9 @@
+{
+    "version": 3,
+    "mappings": "AAAA,AAAA,eAAe,CAAC;EACd,KAAK,EAAE,kBAAkB;EACzB,WAAW,EAAE,GAAG;EAChB,UAAU,EAAE,KAAK;CAClB",
+    "sources": [
+        "error-list.scss"
+    ],
+    "names": [],
+    "file": "error-list.css"
+}
