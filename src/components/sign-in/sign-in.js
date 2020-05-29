@@ -1,8 +1,7 @@
 import React from "react";
-import { Link,  Redirect } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import { userLoad, errorClearing } from "../../actions/user-action";
-import compose from "../../utils/compose";
 import ErrorList from "../error-list";
 import Spinner from "../spinner";
 import "./sign-in.css";
@@ -26,8 +25,11 @@ class SignIn extends React.Component {
   };
   //добавить очистку списка ошибок и обработчик загрузки
   render() {
-    const { user, loading, error, errorClearing } = this.props;
+    const { user, loading, error, errorClearing, token } = this.props;
     console.log(user);
+    if (token) {
+      return <Redirect to="/" />;
+    }
     if (loading && !Object.keys(error).length)
       return (
         <div className="container d-flex wrapper">
@@ -41,9 +43,9 @@ class SignIn extends React.Component {
           <Link to={"/register"}>Need an account?</Link>
         </p>
 
-        <app-list-errors>
+        <div>
           {Object.keys(error).length ? <ErrorList errors={error} /> : null}
-        </app-list-errors>
+        </div>
 
         <form
           onSubmit={(e) => e.preventDefault()}
@@ -70,7 +72,6 @@ class SignIn extends React.Component {
               onClick={this.onLoadUser}
               type="submit"
               className="btn btn-lg btn-primary pull-xs-right"
-              //disabled
             >
               Sign in
             </button>
@@ -81,11 +82,12 @@ class SignIn extends React.Component {
   }
 }
 
-const mapStateToProps = ({ user: { user, loading, error } }) => {
+const mapStateToProps = ({ user: { user, loading, error, token } }) => {
   return {
     user,
     loading,
     error,
+    token,
   };
 };
 

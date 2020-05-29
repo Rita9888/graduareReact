@@ -1,8 +1,15 @@
 import React from "react";
+import { userLoggedOut } from "../../actions/user-action";
+import { connect } from "react-redux";
+import { Redirect } from "react-router-dom";
 import "./settings.css";
 
 class Settings extends React.Component {
   render() {
+    const { userLoggedOut, token } = this.props;
+    if (!token) {
+      return <Redirect to="/" />;
+    }
     return (
       <div className="settings-page">
         <div class="col-md-6 offset-md-3 col-xs-12">
@@ -58,7 +65,7 @@ class Settings extends React.Component {
             </fieldset>
           </form>
           <hr />
-          <button className="btn btn-outline-danger">
+          <button className="btn btn-outline-danger" onClick={userLoggedOut()}>
             Or click here to logout.
           </button>
         </div>
@@ -67,4 +74,16 @@ class Settings extends React.Component {
   }
 }
 
-export default Settings;
+const mapStateToProps = ({ user: { token } }) => {
+  return {
+    token,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    userLoggedOut: () => dispatch(userLoggedOut()),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Settings);

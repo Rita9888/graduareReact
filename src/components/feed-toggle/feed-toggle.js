@@ -1,68 +1,57 @@
 import React from "react";
 import { connect } from "react-redux";
-import { articlesListSwitch } from "../../actions/article-cart";
-
+import { Link } from "react-router-dom";
+import ArticleListContainer from "../article-list-container";
 import "./feed-toggle.css";
 
 //исправить отрисовку класса active
 class FeedToggle extends React.Component {
   state = {
-    toggleGloalFeed: true,
-    toggleYourFeed: false,
+    typeArticles: "GlobalFeed",
   };
-
-  toggleFunction = () => {
-    this.setState({
-      toggleGloalFeed: !this.state.toggleGloalFeed,
-      toggleYourFeed: !this.state.toggleYourFeed,
-    });
-  };
-
+  switchButton(type) {
+    this.setState({ typeArticles: type });
+  }
   render() {
-    const { switchButton, toggleButtonTag, currentTag } = this.props;
+    const { toggleButtonTag, currentTag } = this.props;
     return (
-      <div className="feed-toggle">
-        <ul className="nav nav-pills outline-active">
-          <li className="nav-item">
-            <a
-              onClick={() => {
-                switchButton("YourFeed");
-                this.toggleFunction();
-              }}
-              className={
-                this.state.toggleYourFeed ? "nav-link active" : "nav-link"
-              }
-              href="!#"
-            >
-              Your Feed
-            </a>
-          </li>
-          <li className="nav-item">
-            <a
-              onClick={() => {
-                switchButton("YourFeed");
-                this.toggleFunction();
-              }}
-              className={
-                this.state.toggleGloalFeed ? "nav-link active" : "nav-link"
-              }
-              href="!#"
-            >
-              Global Feed
-            </a>
-          </li>
-          <li className="nav-item">
-            <a
-              onClick={() => switchButton("TagFeed")}
-              className={
-                toggleButtonTag ? "nav-link active" : "nav-link button-none"
-              }
-              href="!#"
-            >
-              #{currentTag}
-            </a>
-          </li>
-        </ul>
+      <div className="container">
+        <div className="row">
+          <div className="feed-toggle col-md-12">
+            <ul className="nav nav-pills outline-active">
+              <li className="nav-item">
+                <Link
+                  onClick={() => this.switchButton("YourFeed")}
+                  className="nav-link"
+                  to={"/"}
+                >
+                  Your Feed
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link
+                  onClick={() => this.switchButton("GlobalFeed")}
+                  className="nav-link"
+                  to={"/"}
+                >
+                  Global Feed
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link
+                  onClick={() => this.switchButton("TagFeed")}
+                  className={
+                    toggleButtonTag ? "nav-link active" : "nav-link button-none"
+                  }
+                  to={"/"}
+                >
+                  #{currentTag}
+                </Link>
+              </li>
+            </ul>
+            <ArticleListContainer typeArticles={this.state.typeArticles} />
+          </div>
+        </div>
       </div>
     );
   }
@@ -75,10 +64,4 @@ const mapStateToProps = ({ article: { toggleButtonTag, currentTag } }) => {
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    switchButton: (button) => dispatch(articlesListSwitch(button)),
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(FeedToggle);
+export default connect(mapStateToProps)(FeedToggle);

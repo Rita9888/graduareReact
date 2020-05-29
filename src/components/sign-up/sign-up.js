@@ -30,7 +30,10 @@ class SignUp extends React.Component {
   };
 
   render() {
-    const { loading, error, errorClearing } = this.props;
+    const { loading, error, errorClearing, token } = this.props;
+    if (token) {
+      return <Redirect to="/" />;
+    }
     if (loading && !Object.keys(error).length)
       return (
         <div className="container d-flex wrapper">
@@ -90,11 +93,12 @@ class SignUp extends React.Component {
   }
 }
 
-const mapStateToProps = ({ user: { user, loading, error } }) => {
+const mapStateToProps = ({ user: { user, loading, error, token } }) => {
   return {
     user,
     loading,
     error,
+    token,
   };
 };
 

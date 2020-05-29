@@ -1,7 +1,6 @@
 import React from "react";
 import TagsComponent from "../tags-component";
 import ArticleList from "../articles-list";
-import FeedToggle from "../feed-toggle";
 import ContainerPage from "../container-page";
 import Spinner from "../spinner";
 //import ErrorIndicator from "../error-indicator/";
@@ -22,56 +21,54 @@ class ArticleListContainer extends React.Component {
     loading: true,
   };
 
-  componentDidMount() {
+  async componentDidMount() {
     const {
       articlestoreService,
       articlesCountLoaded,
-      articlePerPage,
-      indexOfLastArticle,
-      currentTag,
+      perPage,
+      index,
+      curTag,
+      typeArticles,
+      user,
     } = this.props;
 
+    let articles = await SwitchTypeArticles(
+      typeArticles,
+      perPage,
+      index,
+      user,
+      curTag,
+      articlestoreService
+    );
+    console.log(typeArticles);
+    const tags = await articlestoreService.getAllTags();
+
     articlestoreService
-      .getArticlesCount(currentTag, articlePerPage, indexOfLastArticle)
+      .getArticlesCount(curTag, perPage, index)
       .then((data) => articlesCountLoaded(data));
+
+    this.setState({ articles, tags, loading: false });
   }
 
   componentWillReceiveProps = async (newProps) => {
     const { articlestoreService, articlesCountLoaded } = this.props;
-    const {
-      articlePerPage,
-      indexOfLastArticle,
-      currentTag,
-      toggleFeed,
-    } = newProps;
-    let articles;
+    const { perPage, index, curTag, typeArticles, user } = newProps;
+    console.log(typeArticles);
 
-    if (toggleFeed === "GlobalFeed") {
-      articles = await articlestoreService.getAllArticles(
-        articlePerPage,
-        indexOfLastArticle
-      );
-    } else if (toggleFeed === "YourFeed") {
-      articles = await articlestoreService.getArticlesByTag(
-        currentTag,
-        articlePerPage,
-        indexOfLastArticle
-      );
-    } else if (toggleFeed === "TagFeed") {
-      articles = await articlestoreService.getArticlesByTag(
-        currentTag,
-        articlePerPage,
-        indexOfLastArticle
-      );
-    } else articles = [];
-
-    const tags = await articlestoreService.getAllTags();
+    let articles = await SwitchTypeArticles(
+      typeArticles,
+      perPage,
+      index,
+      user,
+      curTag,
+      articlestoreService
+    );
 
     articlestoreService
-      .getArticlesCount(currentTag, articlePerPage, indexOfLastArticle)
+      .getArticlesCount(curTag, perPage, index)
       .then((data) => articlesCountLoaded(data));
 
-    this.setState({ articles, tags, loading: false });
+    this.setState({ articles, loading: false });
   };
 
   render() {
@@ -84,7 +81,6 @@ class ArticleListContainer extends React.Component {
     } else {
       return (
         <div>
-          <ContainerPage left={<FeedToggle />} />
           <ContainerPage
             right={<TagsComponent tags={tags} sortByTag={sortByTag} />}
             left={<ArticleList articles={articles} />}
@@ -97,27 +93,54 @@ class ArticleListContainer extends React.Component {
   }
 }
 
-const mapStateToProps = ({
-  article: {
-    loading,
-    error,
-    articlePerPage,
-    articlesCount,
-    currentPage,
-    indexOfLastArticle,
-    currentTag,
-    toggleFeed,
-  },
-}) => {
+const SwitchTypeArticles = async (
+  typeArticles,
+  perPage,
+  index,
+  user,
+  curTag,
+  articlestoreService
+) => {
+  let articles;
+  switch (typeArticles) {
+    case "GlobalFeed":
+      articles = await articlestoreService.getAllArticles(perPage, index);
+      break;
+    case "YourFeed":
+      articles = await articlestoreService.getArticlesByFollow(perPage, index);
+      break;
+    case "MyPosts":
+      articles = await articlestoreService.getUserArticles(perPage, user);
+      break;
+    case "FavoritePost":
+      articles = await articlestoreService.getArticlesByFavorited(
+        perPage,
+        user
+      );
+      break;
+    case "TagFeed":
+      articles = await articlestoreService.getArticlesByTag(
+        curTag,
+        perPage,
+        index
+      );
+      break;
+    default:
+      return [];
+  }
+  console.log(articles, "asd");
+  return articles;
+};
+
+const mapStateToProps = (state) => {
   return {
-    loading,
-    error,
-    articlePerPage,
-    articlesCount,
-    currentPage,
-    indexOfLastArticle,
-    currentTag,
-    toggleFeed,
+    loading: state.article.loading,
+    error: state.article.error,
+    perPage: state.article.articlePerPage,
+    count: state.article.articleCount,
+    curPage: state.article.currentPage,
+    index: state.article.indexOfLastArticle,
+    curTag: state.article.currentTag,
   };
 };
 

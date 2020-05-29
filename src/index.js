@@ -10,6 +10,7 @@ import App from "./components/app";
 import { ArticlestoreServiceProvider } from "./components/articlestore-service-context";
 import ArticlestoreService from "./service/articlestore-service";
 //import * as serviceWorker from "./serviceWorker";
+import "font-awesome/css/font-awesome.min.css";
 
 import store from "./store";
 
