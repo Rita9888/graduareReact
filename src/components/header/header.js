@@ -6,7 +6,6 @@ import { connect } from "react-redux";
 import "./header.css";
 
 const Header = ({ token }) => {
-  console.log(token);
   return (
     <nav className="navbar navbar-light">
       <div className="container">

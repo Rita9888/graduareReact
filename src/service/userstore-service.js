@@ -33,6 +33,16 @@ class UserstoreService {
     return await res.json();
   };
 
+  _putDataResourse = async (url) => {
+    const res = await fetch(`${this.baseURL}${url}`, {
+      method: "PUT",
+    });
+    if (!res.ok) {
+      throw new Error(res.status);
+    }
+    return await res.json();
+  };
+
   postUserToLogin = async (user = {}) => {
     const res = await this._postDataToResourse({ user }, "/users/login");
     return await res;
@@ -65,6 +75,11 @@ class UserstoreService {
     const res = await this._deleteDataFromResourse(
       `/profiles/${username}/follow`
     );
+    return res;
+  };
+
+  putUser = async (user) => {
+    const res = await this._putDataResourse("user", { user });
     return res;
   };
 

@@ -2,8 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 
-const PrivateMenu = (user) => {
-  console.log(user);
+const PrivateMenu = ({ user }) => {
   return (
     <ul className="nav pull-xs-right">
       <li className="nav-item">
@@ -23,9 +22,9 @@ const PrivateMenu = (user) => {
         </Link>
       </li>
       <li className="nav-item">
-        <Link className="nav-link" to={`/profile/${user.username}`}>
+        <Link className="nav-link" to={`/profile/${user.user.username}`}>
           <i className="fa fa-user fa-fw"></i>
-          {user.username}
+          {user.user.username}
         </Link>
       </li>
     </ul>

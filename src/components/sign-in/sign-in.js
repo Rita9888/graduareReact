@@ -25,8 +25,7 @@ class SignIn extends React.Component {
   };
   //добавить очистку списка ошибок и обработчик загрузки
   render() {
-    const { user, loading, error, errorClearing, token } = this.props;
-    console.log(user);
+    const { loading, error, errorClearing, token } = this.props;
     if (token) {
       return <Redirect to="/" />;
     }

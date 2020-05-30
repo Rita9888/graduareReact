@@ -2,19 +2,27 @@ import React from "react";
 import { userLoggedOut } from "../../actions/user-action";
 import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
+import ErrorList from "../../components/error-list";
 import "./settings.css";
 
 class Settings extends React.Component {
+  state = {
+    username: this.props.user.user.username,
+  };
   render() {
-    const { userLoggedOut, token } = this.props;
+    const { userLoggedOut, token, user, error } = this.props;
+    const userData = user.user;
+    console.log(userData);
     if (!token) {
       return <Redirect to="/" />;
     }
     return (
       <div className="settings-page">
-        <div class="col-md-6 offset-md-3 col-xs-12">
+        <div className="col-md-6 offset-md-3 col-xs-12">
           <h1 className="text-xs-center">Your Settings</h1>
-          <app-list-errors></app-list-errors>
+          <div>
+            {Object.keys(error).length ? <ErrorList errors={error} /> : null}
+          </div>
           <form className="ng-untouched ng-pristine ng-valid">
             <fieldset>
               <fieldset className="form-group">
@@ -22,6 +30,7 @@ class Settings extends React.Component {
                   className="form-control ng-untouched ng-pristine ng-valid"
                   placeholder="URL of profile picture"
                   type="text"
+                  value={userData.image}
                 />
               </fieldset>
               <fieldset className="form-group">
@@ -29,7 +38,7 @@ class Settings extends React.Component {
                   className="form-control ng-untouched ng-pristine ng-valid"
                   placeholder="Username"
                   type="text"
-                  formcontrolname="username"
+                  value={userData.username}
                 />
               </fieldset>
               <fieldset className="form-group">
@@ -37,7 +46,7 @@ class Settings extends React.Component {
                   className="form-control form-control-lg ng-untouched ng-pristine ng-valid"
                   placeholder="Short bio about you"
                   rows="8"
-                  formcontrolname="bio"
+                  value={userData.bio}
                 ></textarea>
               </fieldset>
               <fieldset className="form-group">
@@ -45,7 +54,7 @@ class Settings extends React.Component {
                   className="form-control ng-untouched ng-pristine ng-valid"
                   placeholder="Email"
                   type="email"
-                  formcontrolname="email"
+                  value={userData.email}
                 />
               </fieldset>
               <fieldset className="form-group">
@@ -53,7 +62,6 @@ class Settings extends React.Component {
                   className="form-control ng-untouched ng-pristine ng-valid"
                   placeholder="New Password"
                   type="password"
-                  formcontrolname="password"
                 />
               </fieldset>
               <button
@@ -65,7 +73,10 @@ class Settings extends React.Component {
             </fieldset>
           </form>
           <hr />
-          <button className="btn btn-outline-danger" onClick={userLoggedOut()}>
+          <button
+            className="btn btn-outline-danger"
+            onClick={() => userLoggedOut()}
+          >
             Or click here to logout.
           </button>
         </div>
@@ -74,9 +85,11 @@ class Settings extends React.Component {
   }
 }
 
-const mapStateToProps = ({ user: { token } }) => {
+const mapStateToProps = ({ user: { token, user, error } }) => {
   return {
     token,
+    user,
+    error,
   };
 };
 

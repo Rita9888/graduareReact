@@ -46,9 +46,9 @@ class SignUp extends React.Component {
         <p>
           <Link to={"/login"}>Have an account?</Link>
         </p>
-        <app-list-errors>
+        <div>
           {Object.keys(error).length ? <ErrorList errors={error} /> : null}
-        </app-list-errors>
+        </div>
         <form
           onSubmit={(e) => e.preventDefault()}
           className="ng-untoched ng-pristine ng-invalid"

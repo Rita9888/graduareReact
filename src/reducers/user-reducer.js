@@ -1,15 +1,16 @@
 const initialState = {
-  user: {},
+  user: JSON.parse(localStorage.getItem("conduitToken")),
   loading: false,
   error: {},
-  token: true,
+  token: Boolean(localStorage.getItem("conduitToken")),
 };
 
 const userReducer = (state = initialState, action) => {
   switch (action.type) {
     case "USER_FETCH_DATA_SUCCESS":
-      const token = action.payload;
-      localStorage.setItem("conduitToken", token);
+      console.log(action.payload);
+      //localStorage.setItem("conduitToken", action.payload);
+      localStorage.setItem("conduitToken", JSON.stringify(action.payload));
       return {
         ...state,
         user: action.payload,

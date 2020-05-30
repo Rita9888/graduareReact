@@ -23,8 +23,10 @@ class UserPage extends React.Component {
   };
   render() {
     const { username, typeArticles } = this.props;
-    const { profile } = this.state;
-
+    const { profile, loading } = this.state;
+    if (loading) {
+      return <Spinner />;
+    }
     return (
       <div className="profile-page">
         <UserBanner {...profile} />

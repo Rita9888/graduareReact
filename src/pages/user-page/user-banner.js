@@ -1,5 +1,6 @@
 import React from "react";
-import Spinner from "../../components/spinner";
+import { Link } from "react-router-dom";
+import FollowButton from "../../components/buttons/follow-button";
 import "./user-banner.css";
 
 const UserBanner = (profile) => {
@@ -10,13 +11,14 @@ const UserBanner = (profile) => {
         <img className="user-img" src={image} />
         <h4>{username}</h4>
         <p></p>
-        <app-follow-button></app-follow-button>
-        <a
+        <FollowButton />
+        <Link
           className="btn btn-sm action-btn btn-outline-secondary action-btn"
-          href="/settings"
+          to={"/settings"}
         >
+          <i className="fa fa-cog fa-fw"></i>
           Settings
-        </a>
+        </Link>
       </div>
     </div>
   );
