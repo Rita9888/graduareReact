@@ -46,4 +46,11 @@ const userLoggedOut = () => {
   };
 };
 
-export { userLoad, userRegistration, errorClearing, userLoggedOut };
+const userUpdate = (user) => {
+  return {
+    type: "USER_UPDATE",
+    payload: user
+  };
+};
+
+export { userLoad, userRegistration, errorClearing, userLoggedOut, userUpdate, userLoadError };

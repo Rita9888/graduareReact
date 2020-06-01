@@ -2,13 +2,21 @@ export default class ArticlestoreService {
   baseURL = "https://conduit.productionready.io/api";
 
   _getToken = () => {
-    const token = localStorage.getItem("conduitToken");
-    return token ? `Token ${token}` : "";
+    try {
+      const token = JSON.stringify(
+        JSON.parse(localStorage.getItem("conduitToken")).user.token
+      );
+      console.warn(token);
+      return `Token ${token}`;
+    } catch (e) {
+      return "";
+    }
   };
 
   _getResourse = async (url) => {
     const res = await fetch(`${this.baseURL}${url}`, {
       headers: {},
+      authorization: this._getToken(),
     });
     if (!res.ok) {
       throw new Error(`Could not fetch ${url}, receive ${res.status}`);
@@ -18,8 +26,7 @@ export default class ArticlestoreService {
 
   getArticle = async (slug) => {
     const res = await this._getResourse(`/articles/${slug}`);
-    const result = this._transformArticles(res.article);
-    return result;
+    return this._transformArticles(res.article);
   };
 
   getAllArticles = async (articlePerPage, indexOfLastArticle) => {
@@ -27,8 +34,7 @@ export default class ArticlestoreService {
       `/articles?limit=${articlePerPage}&amp;offset=${indexOfLastArticle}.`
     );
     const newArrayArticle = res.articles;
-    const result = newArrayArticle.map(this._transformArticles);
-    return result;
+    return newArrayArticle.map(this._transformArticles);
   };
 
   getArticlesByTag = async (tag, articlePerPage, indexOfLastArticle) => {
@@ -36,28 +42,24 @@ export default class ArticlestoreService {
       `/articles?tag=${tag}&amp;limit=${articlePerPage}&amp;offset=${indexOfLastArticle}`
     );
     const newArrayArticle = res.articles;
-    const result = newArrayArticle.map(this._transformArticles);
-    return result;
+    return newArrayArticle.map(this._transformArticles);
   };
 
   getAllTags = async () => {
     const res = await this._getResourse(`/tags`);
-    const tags = res.tags;
-    return tags;
+    return res.tags;
   };
 
   getArticlesCount = async (param, articlePerPage, indexOfLastArticle) => {
     const res = await this._getResourse(
       `/articles?tag=${param}&amp;limit=${articlePerPage}&amp;offset=${indexOfLastArticle}`
     );
-    const articlesCount = res.articlesCount;
-    return articlesCount;
+    return res.articlesCount;
   };
 
   getProfile = async (username) => {
     const res = await this._getResourse(`/profiles/${username}`);
-    const profileData = res.profile;
-    return profileData;
+    return res.profile;
   };
 
   getArticlesByFollow = async (articlePerPage, indexOfLastArticle) => {
@@ -70,8 +72,7 @@ export default class ArticlestoreService {
     const res = await this._getResourse(
       `/articles?author=${user}&amp;limit=10&amp;offset=0`
     );
-    const result = res.articles.map(this._transformArticles);
-    return result;
+    return res.articles.map(this._transformArticles);
   };
 
   //получение статей лайкнутых пользователям
@@ -95,6 +96,10 @@ export default class ArticlestoreService {
       throw new Error(`Could not fetch ${url}, receive ${res.status}`);
     }
     return await res.json();
+  };
+
+  postNewArticle = async (article) => {
+    return await this._postResourse("/articles", { article });
   };
 
   _transformArticles = (article, index) => {

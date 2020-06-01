@@ -2,15 +2,13 @@ import React from "react";
 import AppArticleMeta from "./app-article-meta";
 import "./article-page.css";
 
-const Banner = (article, user) => {
+export default function Banner(props) {
   return (
     <div className="banner">
       <div className="container">
-        <h1>{article.title}</h1>
-        <AppArticleMeta user={user} article={article} />
+        <h1>{props.title}</h1>
+        <AppArticleMeta {...props} />
       </div>
     </div>
   );
-};
-
-export default Banner;
+}

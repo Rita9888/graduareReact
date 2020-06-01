@@ -1,4 +1,5 @@
 import React from "react";
+import { Input, Textarea } from "../../components/form-tags";
 
 class NewArticlePage extends React.Component {
   render() {
@@ -9,36 +10,24 @@ class NewArticlePage extends React.Component {
           <form className="ng-untouched ng-pristine ng-valid">
             <fieldset>
               <fieldset className="form-group">
-                <input
-                  className="form-control ng-untouched ng-pristine ng-valid"
-                  placeholder="Article Title"
-                  type="text"
-                  formcontrolname="title"
-                />
+                <Input className="editor-input" placeholder="Article Title" />
               </fieldset>
               <fieldset className="form-group">
-                <input
-                  className="form-control ng-untouched ng-pristine ng-valid"
+                <Input
+                  className="editor-input"
                   placeholder="What's this article about?"
-                  type="text"
-                  formcontrolname="description"
                 />
               </fieldset>
               <fieldset className="form-group">
-                <textarea
-                  className="form-control ng-untouched ng-pristine ng-valid"
+                <Textarea
+                  className="editor-textarea"
                   placeholder="Write your article (in markdown)"
                   rows="8"
-                  formcontrolname="body"
-                ></textarea>
+                />
               </fieldset>
 
               <fieldset className="form-group">
-                <input
-                  className="form-control ng-untouched ng-pristine ng-valid"
-                  placeholder="Enter tags"
-                  type="text"
-                />
+                <Input className="editor-input" placeholder="Enter tags" />
               </fieldset>
               <button
                 className="btn btn-primary btn-lg pull-xs-right"

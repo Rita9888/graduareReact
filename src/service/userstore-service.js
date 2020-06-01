@@ -1,8 +1,15 @@
 class UserstoreService {
   baseURL = "https://conduit.productionready.io/api";
   _getToken = () => {
-    const token = localStorage.getItem("conduitToken");
-    return token ? `Token ${token}` : "";
+    try {
+      const token = JSON.stringify(
+        JSON.parse(localStorage.getItem("conduitToken")).user.token
+      );
+      console.warn(token);
+      return `Token ${token}`;
+    } catch (e) {
+      return "";
+    }
   };
 
   _postDataToResourse = async (data = {}, url) => {
@@ -10,6 +17,7 @@ class UserstoreService {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        authorization: this._getToken(),
       },
       body: JSON.stringify(data),
     });
@@ -33,11 +41,19 @@ class UserstoreService {
     return await res.json();
   };
 
-  _putDataResourse = async (url) => {
+  _putDataResourse = async (url, data) => {
     const res = await fetch(`${this.baseURL}${url}`, {
       method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: this._getToken(),
+      },
+      body: JSON.stringify(data),
     });
     if (!res.ok) {
+      if (Object.keys(data).length) {
+        throw await res.json();
+      }
       throw new Error(res.status);
     }
     return await res.json();
@@ -72,14 +88,11 @@ class UserstoreService {
   };
 
   deleteFollow = async (username) => {
-    const res = await this._deleteDataFromResourse(
-      `/profiles/${username}/follow`
-    );
-    return res;
+    return await this._deleteDataFromResourse(`/profiles/${username}/follow`);
   };
 
   putUser = async (user) => {
-    const res = await this._putDataResourse("user", { user });
+    const res = await this._putDataResourse("/user", user);
     return res;
   };
 

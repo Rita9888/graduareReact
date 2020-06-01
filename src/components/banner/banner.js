@@ -4,7 +4,7 @@ import "./banner.css";
 
 const Banner = () => {
   return (
-    <div _ngcontent-c0="true" className="banner">
+    <div className="banner">
       <div className="container">
         <h1 className="logo-font">conduit</h1>
         <p>

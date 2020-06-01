@@ -34,7 +34,7 @@ class ArticlePage extends React.Component {
     }
     return (
       <div className="article-page">
-        <Banner {...article} user={user} />
+        <Banner {...article} {...user} />
         <div className="container page">
           <div className="article-content">
             <div className="col-md-12">

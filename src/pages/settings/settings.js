@@ -1,20 +1,83 @@
 import React from "react";
-import { userLoggedOut } from "../../actions/user-action";
+import {
+  userLoggedOut,
+  userUpdate,
+  userLoadError,
+} from "../../actions/user-action";
 import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
+import UserstoreService from "../../service/userstore-service";
 import ErrorList from "../../components/error-list";
+import { Input, Textarea } from "../../components/form-tags";
 import "./settings.css";
+import Spinner from "../../components/spinner";
 
 class Settings extends React.Component {
   state = {
-    username: this.props.user.user.username,
+    userData: this.props.user.user,
+    password: "",
+    updatingStatus: false,
+    loading: false,
   };
+
+  handleOnChaneImage = (value) => {
+    let userData = this.state.userData;
+    userData.image = value;
+    this.setState({ userData });
+  };
+
+  handleOnChangeUserName = (value) => {
+    let userData = this.state.userData;
+    userData.username = value;
+    this.setState({ userData });
+  };
+
+  handleOnUpdateShortDescription = (value) => {
+    let userData = this.state.userData;
+    userData.bio = value;
+    this.setState({ userData });
+  };
+
+  handleOnUpdateEmail = (value) => {
+    let userData = this.state.userData;
+    userData.email = value;
+    this.setState({ userData });
+  };
+
+  handleOnUpdatePassword = (value) => {
+    let userData = this.state.userData;
+    userData.password = value;
+    this.setState({ password: value });
+    this.setState({ userData });
+  };
+
+  handleUpdateUserSettings(event) {
+    this.setState({ loading: true });
+    event.preventDefault();
+    const userData = this.props.user.user;
+    UserstoreService.putUser({ user: userData })
+      .then((response) => {
+        this.props.userUpdate(response);
+        this.setState({
+          updatingStatus: true,
+        });
+      })
+      .catch((error) => {
+        this.props.userLoadError(error.errors);
+      });
+  }
+
   render() {
-    const { userLoggedOut, token, user, error } = this.props;
-    const userData = user.user;
-    console.log(userData);
+    const { userLoggedOut, token, error } = this.props;
+    const { userData, updatingStatus, loading } = this.state;
     if (!token) {
       return <Redirect to="/" />;
+    }
+    if (updatingStatus) {
+      return <Redirect to={`/profile/${userData.username}`} />;
+    }
+    if (loading) {
+      return <Spinner />;
     }
     return (
       <div className="settings-page">
@@ -25,48 +88,47 @@ class Settings extends React.Component {
           </div>
           <form className="ng-untouched ng-pristine ng-valid">
             <fieldset>
-              <fieldset className="form-group">
-                <input
-                  className="form-control ng-untouched ng-pristine ng-valid"
-                  placeholder="URL of profile picture"
-                  type="text"
-                  value={userData.image}
-                />
-              </fieldset>
-              <fieldset className="form-group">
-                <input
-                  className="form-control ng-untouched ng-pristine ng-valid"
-                  placeholder="Username"
-                  type="text"
-                  value={userData.username}
-                />
-              </fieldset>
-              <fieldset className="form-group">
-                <textarea
-                  className="form-control form-control-lg ng-untouched ng-pristine ng-valid"
-                  placeholder="Short bio about you"
-                  rows="8"
-                  value={userData.bio}
-                ></textarea>
-              </fieldset>
-              <fieldset className="form-group">
-                <input
-                  className="form-control ng-untouched ng-pristine ng-valid"
-                  placeholder="Email"
-                  type="email"
-                  value={userData.email}
-                />
-              </fieldset>
-              <fieldset className="form-group">
-                <input
-                  className="form-control ng-untouched ng-pristine ng-valid"
-                  placeholder="New Password"
-                  type="password"
-                />
-              </fieldset>
+              <Input
+                className="settings_input"
+                placeholder="URL of profile picture"
+                name="settings_image"
+                value={userData.image}
+                handler={this.handleOnChaneImage}
+              />
+              <Input
+                className="settings_username"
+                placeholder="Username"
+                name="settings_username"
+                value={userData.username}
+                handler={this.handleOnChangeUserName}
+              />
+              <Textarea
+                className="settings_short_descr"
+                placeholder="Short bio about you"
+                name="settings_textarea"
+                value={userData.bio}
+                handler={this.handleOnUpdateShortDescription}
+              />
+              <Input
+                className="settings_email"
+                placeholder="Email"
+                type="email"
+                name="settings_email"
+                value={userData.email}
+                handler={this.handleOnUpdateEmail}
+              />
+              <Input
+                className="settings_input"
+                placeholder="New Password"
+                type="password"
+                name="settings_password"
+                value={this.state.password}
+                handler={this.handleOnUpdatePassword}
+              />
               <button
                 className="btn btn-primary btn-lg pull-xs-right"
                 type="submit"
+                onClick={(event) => this.handleUpdateUserSettings(event)}
               >
                 Update Settings
               </button>
@@ -95,7 +157,9 @@ const mapStateToProps = ({ user: { token, user, error } }) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    userUpdate: (user) => dispatch(userUpdate(user)),
     userLoggedOut: () => dispatch(userLoggedOut()),
+    userLoadError: (e) => dispatch(userLoadError(e)),
   };
 };
 

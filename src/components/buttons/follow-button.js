@@ -12,7 +12,6 @@ class ButtonFollow extends React.Component {
     };
   }
   toggleFollow(username) {
-    console.log(username);
     if (this.state.follow === false) {
       UserstoreService.postFollow(username)
         .then((following) => this.setState({ follow: following }))

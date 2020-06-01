@@ -40,6 +40,14 @@ const userReducer = (state = initialState, action) => {
         user: {},
         token: false,
       };
+    case "USER_UPDATE":
+      localStorage.clear();
+      localStorage.setItem("conduitToken", JSON.stringify(action.payload));
+      return {
+        ...state,
+        user: action.payload,
+        token: true,
+      };
     default:
       return {
         ...state,
