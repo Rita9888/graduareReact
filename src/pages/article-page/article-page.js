@@ -1,7 +1,7 @@
 import React from "react";
 import Banner from "./banner";
 import Spinner from "../../components/spinner";
-import AppArticleMeta from "./app-article-meta";
+//import AppArticleMeta from "./app-article-meta";
 import { withArticlestoreService } from "../../components/hoc/with-articlestore-service";
 
 class ArticlePage extends React.Component {
@@ -28,7 +28,7 @@ class ArticlePage extends React.Component {
   };
   render() {
     const { article, user, loading } = this.state;
-    const { body, createdAt } = article;
+    const { body } = article;
     if (loading) {
       return <Spinner />;
     }
@@ -45,9 +45,6 @@ class ArticlePage extends React.Component {
             </div>
           </div>
           <hr />
-          <div className="article-actions">
-            <AppArticleMeta {...user} />
-          </div>
         </div>
         <div className="col-xs-12 col-md-8 offset-md-2">
           <form className="card comment-form ng-untoched ng-pristine ng-valid">

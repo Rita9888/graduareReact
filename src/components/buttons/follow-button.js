@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import UserstoreService from "../../service/userstore-service";
+import { withArticlestoreService } from "../hoc/with-articlestore-service";
 
 import "./buttons.css";
 
@@ -11,14 +12,21 @@ class ButtonFollow extends React.Component {
       follow: this.props.following,
     };
   }
-  toggleFollow(username) {
+  toggleFollow(slug) {
+    const { articlestoreService } = this.props;
     if (this.state.follow === false) {
-      UserstoreService.postFollow(username)
-        .then((following) => this.setState({ follow: following }))
+      articlestoreService
+        .postFollow(slug)
+        .then((response) => {
+          this.setState({ follow: response.profile.following });
+          })
         .catch((e) => console.log(e));
     } else {
-      UserstoreService.deleteFollow(username)
-        .then((following) => this.setState({ follow: following }))
+      articlestoreService
+        .deleteFollow(slug)
+        .then((response) => {
+          this.setState({ follow: response.profile.following });
+        })
         .catch((e) => console.log(e));
     }
   }
@@ -43,4 +51,4 @@ class ButtonFollow extends React.Component {
   }
 }
 
-export default ButtonFollow;
+export default withArticlestoreService()(ButtonFollow);

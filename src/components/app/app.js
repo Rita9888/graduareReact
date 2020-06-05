@@ -1,15 +1,10 @@
 import React from "react";
-import {
-  BrowserRouter as Router,
-  Route,
-  Switch,
-  Redirect,
-} from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Header from "../header";
 import Banner from "../banner";
 import FeedToggle from "../feed-toggle";
-import SignIn from "../sign-in";
-import SignUp from "../sign-up";
+import SignIn from "../../pages/sign-in";
+import SignUp from "../../pages/sign-up";
 import Settings from "../../pages/settings";
 import NewArticlePage from "../../pages/newarticle-page";
 import UserPage from "../../pages/user-page";
@@ -29,7 +24,10 @@ class App extends React.Component {
           <Route path="/login" render={() => <SignIn />} />
           <Route path="/register" render={() => <SignUp />} />
           <Route path="/settings" render={() => <Settings />} />
-          <Route path="/editor" render={() => <NewArticlePage />} />
+          <Route
+            path="/editor/:slug?"
+            render={({ match }) => <NewArticlePage slug={match.params.slug} />}
+          />
           <Route
             path="/article/:slug"
             render={({ match }) => <ArticlePage slug={match.params.slug} />}

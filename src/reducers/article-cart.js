@@ -52,6 +52,11 @@ const reducer = (state = initialState, action) => {
           toggleFeed: action.payload,
           toggleButtonTag: true,
         };
+    case "ARTICLE_LOAD_ERROR":
+      return {
+        ...state,
+        error: action.payload,
+      };
     default:
       return state;
   }

@@ -29,7 +29,7 @@ class UserPage extends React.Component {
     }
     return (
       <div className="profile-page">
-        <UserBanner {...profile} />
+        <UserBanner profile={profile} />
         <div className="col-xs-12 col-md-10 offset-md-1">
           <div className="articles-toggle">
             <ul className="nav nav-pills outline-active">

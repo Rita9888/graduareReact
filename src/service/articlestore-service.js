@@ -15,11 +15,61 @@ export default class ArticlestoreService {
 
   _getResourse = async (url) => {
     const res = await fetch(`${this.baseURL}${url}`, {
-      headers: {},
-      authorization: this._getToken(),
+      headers: {
+        authorization: this._getToken(),
+      },
     });
     if (!res.ok) {
       throw new Error(`Could not fetch ${url}, receive ${res.status}`);
+    }
+    return await res.json();
+  };
+
+  _postResourse = async (url, data = {}) => {
+    const res = await fetch(`${this.baseURL}${url}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        authorization: this._getToken(),
+      },
+      body: JSON.stringify(data),
+    });
+    if (!res.ok) {
+      if (Object.keys(data).length) {
+        throw await res.json();
+      }
+      throw new Error(`Could not fetch ${url}, receive ${res.status}`);
+    }
+    return await res.json();
+  };
+
+  _putDataResourse = async (url, data) => {
+    const res = await fetch(`${this.baseURL}${url}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: this._getToken(),
+      },
+      body: JSON.stringify(data),
+    });
+    if (!res.ok) {
+      if (Object.keys(data).length) {
+        throw await res.json();
+      }
+      throw new Error(res.status);
+    }
+    return await res.json();
+  };
+
+  _deleteDataResourse = async (url) => {
+    const res = await fetch(`${this.baseURL}${url}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: this._getToken(),
+      },
+    });
+    if (!res.ok) {
+      throw new Error(res.status);
     }
     return await res.json();
   };
@@ -75,31 +125,39 @@ export default class ArticlestoreService {
     return res.articles.map(this._transformArticles);
   };
 
-  //получение статей лайкнутых пользователям
   getArticlesByFavorited = async (pageIndex = 0, user) => {
     return this._getArticles(pageIndex, `?favorited=${user}&`);
   };
 
-  _postResourse = async (url, data = {}) => {
-    const res = await fetch(`${this.baseURL}${url}`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        authorization: this._getToken(),
-      },
-      body: JSON.stringify(data),
-    });
-    if (!res.ok) {
-      if (Object.keys(data).length) {
-        throw await res.json();
-      }
-      throw new Error(`Could not fetch ${url}, receive ${res.status}`);
-    }
-    return await res.json();
-  };
-
   postNewArticle = async (article) => {
     return await this._postResourse("/articles", { article });
+  };
+
+  putArticle = async (article, slug) => {
+    return await this._putDataResourse(`/articles/${slug}`, { article });
+  };
+
+  postLike = async (slug) => {
+    const res = await this._postResourse(`/articles/${slug}/favorite`);
+    return this._transformArticles(res.article);
+  };
+
+  deleteLike = async (slug) => {
+    const res = await this._deleteDataResourse(`/articles/${slug}/favorite`);
+    return this._transformArticles(res.article);
+  };
+
+  postFollow = async (slug) => {
+    const res = await this._postResourse(`/profiles/${slug}/follow`);
+    return res;
+  };
+
+  deleteFollow = async (slug) => {
+    return await this._deleteDataResourse(`/profiles/${slug}/follow`);
+  };
+
+  deleteArticle = async (slug) => {
+    return await this._deleteDataResourse(`/articles/${slug}`);
   };
 
   _transformArticles = (article, index) => {

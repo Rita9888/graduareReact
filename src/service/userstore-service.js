@@ -69,28 +69,6 @@ class UserstoreService {
     return await res;
   };
 
-  postLike = async (slug) => {
-    const res = await this._postDataToResourse(`/articles/${slug}/favorite`);
-    return this._transformArticles(res.article);
-  };
-
-  deleteLike = async (slug) => {
-    const res = await this._deleteDataFromResourse(
-      `/articles/${slug}/ favorite`
-    );
-    return this._transformArticles(res.article);
-  };
-
-  postFollow = async (username) => {
-    const res = await this._postDataToResourse(`/profiles/${username}/follow`);
-    console.log(res);
-    return res;
-  };
-
-  deleteFollow = async (username) => {
-    return await this._deleteDataFromResourse(`/profiles/${username}/follow`);
-  };
-
   putUser = async (user) => {
     const res = await this._putDataResourse("/user", user);
     return res;

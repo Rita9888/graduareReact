@@ -1,5 +1,5 @@
 import React from "react";
-
+import { Link } from "react-router-dom";
 import "./tags-component.css";
 
 const TagsComponent = ({ tags, sortByTag }) => {
@@ -8,16 +8,16 @@ const TagsComponent = ({ tags, sortByTag }) => {
       <p>Popular Tags</p>
       <div className="tag-list">
         {tags.map((tag, index) => (
-          <a
+          <Link
             onClick={() => {
               sortByTag(tag);
             }}
             className="tag-default tag-pill"
             key={index}
-            href="!#"
+            to="/"
           >
             {tag}
-          </a>
+          </Link>
         ))}
       </div>
     </div>

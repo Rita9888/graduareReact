@@ -1,15 +1,20 @@
 import React from "react";
 import { Link, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
-import { userLoad, errorClearing } from "../../actions/user-action";
-import ErrorList from "../error-list";
-import Spinner from "../spinner";
-import "./sign-in.css";
+import { userRegistration, errorClearing } from "../../actions/user-action";
+import ErrorList from "../../components/error-list";
+import Spinner from "../../components/spinner";
+import "./sign-up.css";
 
-class SignIn extends React.Component {
+class SignUp extends React.Component {
   state = {
+    username: "",
     email: "test",
     password: "testP",
+  };
+
+  onCHangeUsername = (e) => {
+    this.setState({ username: e.target.value });
   };
 
   onChangeEmail = (e) => {
@@ -21,9 +26,9 @@ class SignIn extends React.Component {
   };
 
   onLoadUser = () => {
-    this.props.userLoad(this.state);
+    this.props.userRegistration(this.state);
   };
-  //добавить очистку списка ошибок и обработчик загрузки
+
   render() {
     const { loading, error, errorClearing, token } = this.props;
     if (token) {
@@ -37,20 +42,26 @@ class SignIn extends React.Component {
       );
     return (
       <div className="col-md-6 offset-md-3 col-xs-12 col-12 mt-5 text-center">
-        <h1>Sign In</h1>
+        <h1>Sign Up</h1>
         <p>
-          <Link to={"/register"}>Need an account?</Link>
+          <Link to={"/login"}>Have an account?</Link>
         </p>
-
         <div>
           {Object.keys(error).length ? <ErrorList errors={error} /> : null}
         </div>
-
         <form
           onSubmit={(e) => e.preventDefault()}
           className="ng-untoched ng-pristine ng-invalid"
         >
           <fieldset>
+            <fieldset className="form-group ">
+              <input
+                type="text"
+                className="form-control form-control-lg ng-untouched ng-pristine ng-invalid"
+                placeholder="Username"
+                onChange={this.onCHangeUsername}
+              />
+            </fieldset>
             <fieldset className="form-group ">
               <input
                 type="email"
@@ -68,9 +79,10 @@ class SignIn extends React.Component {
               />
             </fieldset>
             <button
-              onClick={this.onLoadUser}
               type="submit"
               className="btn btn-lg btn-primary pull-xs-right"
+              onClick={this.onLoadUser}
+              // disabled
             >
               Sign in
             </button>
@@ -92,9 +104,9 @@ const mapStateToProps = ({ user: { user, loading, error, token } }) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    userLoad: (user) => dispatch(userLoad(user)),
+    userRegistration: (user) => dispatch(userRegistration(user)),
     errorClearing: () => dispatch(errorClearing()),
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(SignIn);
+export default connect(mapStateToProps, mapDispatchToProps)(SignUp);

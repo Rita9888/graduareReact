@@ -45,6 +45,13 @@ const articlesListSwitch = (toggleButton) => {
   };
 };
 
+const articleLoadError = (error) => {
+  return {
+    type: "ARTICLE_LOAD_ERROR",
+    payload: error,
+  };
+};
+
 export {
   articleLoading,
   articlesCountLoaded,
@@ -52,4 +59,5 @@ export {
   articlesLoadingError,
   sortByTag,
   articlesListSwitch,
+  articleLoadError,
 };
