@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import LikeButton from "../../buttons/like-button";
 import "./article-list-item.css";
 
 const ArticleListItem = ({ article }) => {
@@ -7,10 +8,10 @@ const ArticleListItem = ({ article }) => {
     title,
     author,
     slug,
-    body,
     createdAt,
-    updatedAt,
     description,
+    favoritesCount,
+    favorited,
   } = article;
   return (
     <div className="article-preview">
@@ -25,7 +26,12 @@ const ArticleListItem = ({ article }) => {
           <span className="date">{createdAt}</span>
         </div>
         <div className="pull-xs-right">
-          <button className="btn btn-sm btn-outline-primary">like</button>
+          <LikeButton
+            favorite={favorited}
+            favoriteCount={favoritesCount}
+            slug={slug}
+            text={"like"}
+          />
         </div>
       </div>
       <Link className="preview-link" to={`/article/${slug}`}>

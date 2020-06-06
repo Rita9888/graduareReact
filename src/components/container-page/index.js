@@ -1,3 +1,4 @@
 import ContainerPage from "./container-page";
+import Row from "./row";
 
-export default ContainerPage;
+export { ContainerPage, Row };

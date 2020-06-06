@@ -2,6 +2,7 @@ import React from "react";
 import { withArticlestoreService } from "../../components/hoc/with-articlestore-service";
 import ArticleListContainer from "../../components/article-list-container";
 import UserBanner from "./user-banner";
+import UserFeedToggle from "../../components/user-feed-toggle";
 import Spinner from "../../components/spinner";
 import { Link } from "react-router-dom";
 import "./user-page.css";
@@ -22,7 +23,7 @@ class UserPage extends React.Component {
       .catch((e) => console.log(e));
   };
   render() {
-    const { username, typeArticles } = this.props;
+    const { username } = this.props;
     const { profile, loading } = this.state;
     if (loading) {
       return <Spinner />;
@@ -30,26 +31,7 @@ class UserPage extends React.Component {
     return (
       <div className="profile-page">
         <UserBanner profile={profile} />
-        <div className="col-xs-12 col-md-10 offset-md-1">
-          <div className="articles-toggle">
-            <ul className="nav nav-pills outline-active">
-              <li className="nav-item">
-                <Link className="nav-link" to={`/profile/${username}`}>
-                  My Posts
-                </Link>
-              </li>
-              <li className="nav-item">
-                <Link
-                  className="nav-link"
-                  to={`/profile/${username}/favorites`}
-                >
-                  Favorited Posts
-                </Link>
-              </li>
-            </ul>
-          </div>
-        </div>
-        <ArticleListContainer typeArticles={typeArticles} user={username} />
+        <UserFeedToggle username={username} />
       </div>
     );
   }

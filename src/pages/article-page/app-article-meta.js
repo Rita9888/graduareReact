@@ -21,7 +21,6 @@ function AppArticleMeta(props) {
     user,
   } = props;
   const currentUser = user.user;
-  console.log(props);
   return (
     <div className="article-meta">
       <Link to={`/profile/${username}`}>
@@ -46,6 +45,7 @@ function AppArticleMeta(props) {
             favorite={favorited}
             favoriteCount={favoritesCount}
             slug={slug}
+            text={"Favorite Article"}
           />
         </span>
       )}

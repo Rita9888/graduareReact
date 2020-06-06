@@ -1,7 +1,7 @@
 import React from "react";
 import TagsComponent from "../tags-component";
 import ArticleList from "../articles-list";
-import ContainerPage from "../container-page";
+import { ContainerPage, Row } from "../container-page";
 import Spinner from "../spinner";
 //import ErrorIndicator from "../error-indicator/";
 import Pagination from "../pagination";
@@ -19,6 +19,7 @@ class ArticleListContainer extends React.Component {
     articles: [],
     tags: [],
     loading: true,
+    tagStatus: false,
   };
 
   async componentDidMount() {
@@ -40,7 +41,6 @@ class ArticleListContainer extends React.Component {
       curTag,
       articlestoreService
     );
-    console.log(typeArticles);
     const tags = await articlestoreService.getAllTags();
 
     articlestoreService
@@ -53,7 +53,6 @@ class ArticleListContainer extends React.Component {
   componentWillReceiveProps = async (newProps) => {
     const { articlestoreService, articlesCountLoaded } = this.props;
     const { perPage, index, curTag, typeArticles, user } = newProps;
-    console.log(typeArticles);
 
     let articles = await SwitchTypeArticles(
       typeArticles,
@@ -69,16 +68,20 @@ class ArticleListContainer extends React.Component {
       .then((data) => articlesCountLoaded(data));
 
     this.setState({ articles, loading: false });
+    console.warn(newProps);
   };
 
   render() {
-    const { error, sortByTag } = this.props;
+    const { sortByTag, typeArticles } = this.props;
     const { loading, articles, tags } = this.state;
     if (loading) {
       return <Spinner />;
-    } else if (error) {
-      // <ErrorIndicator />;
-    } else {
+    }
+    if (
+      typeArticles === "GlobalFeed" ||
+      typeArticles === "YourFeed" ||
+      typeArticles === "TagFeed"
+    ) {
       return (
         <div>
           <ContainerPage
@@ -89,6 +92,8 @@ class ArticleListContainer extends React.Component {
           <ContainerPage left={<Pagination />} />
         </div>
       );
+    } else {
+      return <Row center={<ArticleList articles={articles} />} />;
     }
   }
 }
@@ -101,6 +106,8 @@ const SwitchTypeArticles = async (
   curTag,
   articlestoreService
 ) => {
+  console.log(user);
+  console.log(typeArticles);
   let articles;
   switch (typeArticles) {
     case "GlobalFeed":
@@ -112,7 +119,7 @@ const SwitchTypeArticles = async (
     case "MyPosts":
       articles = await articlestoreService.getUserArticles(perPage, user);
       break;
-    case "FavoritePost":
+    case "FavoritedPost":
       articles = await articlestoreService.getArticlesByFavorited(
         perPage,
         user
@@ -128,7 +135,7 @@ const SwitchTypeArticles = async (
     default:
       return [];
   }
-  console.log(articles, "asd");
+  console.log(articles);
   return articles;
 };
 
@@ -141,6 +148,7 @@ const mapStateToProps = (state) => {
     curPage: state.article.currentPage,
     index: state.article.indexOfLastArticle,
     curTag: state.article.currentTag,
+    token: state.user.token,
   };
 };
 

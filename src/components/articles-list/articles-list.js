@@ -6,9 +6,9 @@ import "./article-list.css";
 const ArticleList = ({ articles }) => {
   return (
     <ul className="article-list">
-      {articles.map((article) => {
+      {articles.map((article, index) => {
         return (
-          <li key={article.id}>
+          <li key={index}>
             <ArticleListItem article={article} />
           </li>
         );

@@ -18,17 +18,13 @@
           align-items: center;
   width: 2em;
   color: black;
+  background-color: #fff;
   float: left;
   text-decoration: none;
 }
 
-.pagination .page-link:hover:not(.active) {
-  background-color: #ddd;
-  color: black;
-}
-
-.pagination .active {
+/* .active {
   background-color: #4caf50;
   color: white;
-}
+} */
 /*# sourceMappingURL=pagination.css.map */

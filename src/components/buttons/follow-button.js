@@ -1,6 +1,4 @@
 import React from "react";
-import { Link } from "react-router-dom";
-import UserstoreService from "../../service/userstore-service";
 import { withArticlestoreService } from "../hoc/with-articlestore-service";
 
 import "./buttons.css";
@@ -19,7 +17,7 @@ class ButtonFollow extends React.Component {
         .postFollow(slug)
         .then((response) => {
           this.setState({ follow: response.profile.following });
-          })
+        })
         .catch((e) => console.log(e));
     } else {
       articlestoreService

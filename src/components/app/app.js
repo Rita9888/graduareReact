@@ -1,26 +1,22 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Header from "../header";
-import Banner from "../banner";
-import FeedToggle from "../feed-toggle";
 import SignIn from "../../pages/sign-in";
 import SignUp from "../../pages/sign-up";
 import Settings from "../../pages/settings";
 import NewArticlePage from "../../pages/newarticle-page";
 import UserPage from "../../pages/user-page";
 import ArticlePage from "../../pages/article-page";
+import HomePage from "../../pages/home-page";
 import { connect } from "react-redux";
 
 class App extends React.Component {
   render() {
-    const { token } = this.props;
-    console.log(token);
     return (
       <Router>
         <Header />
-        {!token && <Banner />}
         <Switch>
-          <Route path="/" component={FeedToggle} exact />
+          <Route path="/" component={HomePage} exact />
           <Route path="/login" render={() => <SignIn />} />
           <Route path="/register" render={() => <SignUp />} />
           <Route path="/settings" render={() => <Settings />} />
@@ -42,7 +38,7 @@ class App extends React.Component {
             )}
           />
           <Route
-            path="/profile/:username/favorite"
+            path="/profile/:username/favorites"
             render={({ match }) => (
               <UserPage
                 username={match.params.username}

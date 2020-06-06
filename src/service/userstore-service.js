@@ -5,7 +5,6 @@ class UserstoreService {
       const token = JSON.stringify(
         JSON.parse(localStorage.getItem("conduitToken")).user.token
       );
-      console.warn(token);
       return `Token ${token}`;
     } catch (e) {
       return "";

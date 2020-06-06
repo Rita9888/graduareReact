@@ -113,9 +113,10 @@ export default class ArticlestoreService {
   };
 
   getArticlesByFollow = async (articlePerPage, indexOfLastArticle) => {
-    return this._getResourse(
+    const res = await this._getResourse(
       `/articles/feed?limit=${articlePerPage}&offset=${indexOfLastArticle}`
     );
+    return res.articles;
   };
 
   getUserArticles = async (articlePerPage, user, indexOfLastArticle) => {
@@ -125,8 +126,12 @@ export default class ArticlestoreService {
     return res.articles.map(this._transformArticles);
   };
 
-  getArticlesByFavorited = async (pageIndex = 0, user) => {
-    return this._getArticles(pageIndex, `?favorited=${user}&`);
+  getArticlesByFavorited = async (pageIndex, user) => {
+    const res = await this._getResourse(
+      pageIndex,
+      `/articles?favorited=${user}&limit=10&amp;offset=0`
+    );
+    return res.articles;
   };
 
   postNewArticle = async (article) => {

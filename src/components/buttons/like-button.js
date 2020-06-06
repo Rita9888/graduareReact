@@ -1,6 +1,8 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import { withArticlestoreService } from "../hoc/with-articlestore-service";
+import { connect } from "react-redux";
+import compose from "../../utils/compose";
+import { Redirect } from "react-router-dom";
 
 import "./buttons.css";
 
@@ -14,7 +16,6 @@ class LikeButton extends React.Component {
   }
 
   toggleFollow(slug) {
-    console.log(slug);
     const { articlestoreService } = this.props;
     if (this.state.like === false) {
       articlestoreService
@@ -39,18 +40,29 @@ class LikeButton extends React.Component {
     }
   }
   render() {
-    const { slug } = this.props;
-
+    const { slug, text, token } = this.props;
+    if (!token) {
+      return <Redirect to={"/login"} />;
+    }
     return (
       <button
         type="button"
         className="btn btn-sm btn-outline-primary"
         onClick={() => this.toggleFollow(slug)}
       >
-        Favorite Article ({this.state.likeCount})
+        {text} ({this.state.likeCount})
       </button>
     );
   }
 }
 
-export default withArticlestoreService()(LikeButton);
+const mapStateToProps = ({ user: { token } }) => {
+  return {
+    token,
+  };
+};
+
+export default compose(
+  withArticlestoreService(),
+  connect(mapStateToProps)
+)(LikeButton);

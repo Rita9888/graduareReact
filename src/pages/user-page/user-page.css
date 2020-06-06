@@ -15,3 +15,8 @@
   background: 0 0;
   color: #aaa;
 }
+
+ul {
+  margin: 0;
+  padding: 0;
+}

@@ -5,9 +5,9 @@ import { NavLink } from "react-router-dom";
 import "./pagination.css";
 
 const Pagination = (props) => {
-  const { paginate, articlesCount, articlePerPage } = props;
+  const { paginate, articlesCount, articlePerPage, currentPage } = props;
   const pageNumbers = [];
-
+  let className = "page-link";
   for (let i = 1; i <= Math.ceil(articlesCount / articlePerPage); i++) {
     pageNumbers.push(i);
   }
@@ -16,14 +16,12 @@ const Pagination = (props) => {
     <nav>
       <ul className="pagination justify-content-start">
         {pageNumbers.map((number) => (
-          <li key={number} className="page-item">
+          <li key={number} className={className}>
             <NavLink
               onClick={() => {
                 paginate(number);
               }}
-              className="page-link"
-              to={"#"}
-              activeClassName="active"
+              to={"/"}
             >
               {number}
             </NavLink>
@@ -34,10 +32,13 @@ const Pagination = (props) => {
   );
 };
 
-const mapStateToProps = ({ article: { articlePerPage, articlesCount } }) => {
+const mapStateToProps = ({
+  article: { articlePerPage, articlesCount, currentPage },
+}) => {
   return {
     articlePerPage,
     articlesCount,
+    currentPage,
   };
 };
 const mapDispatchToProps = (dispatch) => {
